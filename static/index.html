@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3T Player 1 vs NN</title>
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+<body>
+
+<div id="game">
+	<div class="table">
+        <div class="cells">
+            <span class="cell"
+				  v-for="(cell, index) in cells"
+				  v-on:click="makeTurn(index)">{{ cell.value }}</span>
+        </div>
+	</div>
+</div>
+
+<div class="copy">Powered by cheshir ©</div>
+
+<script src="assets/script.js"></script>
+
+</body>
+</html>
