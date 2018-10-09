@@ -32,7 +32,7 @@ Table.prototype.isWinning = function(index) {
 
     // Look horizontal.
     let horizontal = 1 // Center.
-        + this.calculateSiblings(expected, index % this.width, (i) => i >= 0, (i) => i - 1)  // Look left.
+        + this.calculateSiblings(expected, index - 1, (i) => i >= (index - index % this.width), (i) => i - 1)  // Look left.
         + this.calculateSiblings(expected, index + 1, (i) => i % this.width != 0, (i) => i + 1); // Look right.
 
     let vertical = 1 // Center.
@@ -126,7 +126,7 @@ const AI = {
         }
     ],
     move: function (table, playerTurn) {
-        // Find nearest to player move free cell.
+        // Find nearest to player's move free cell.
         for (let i = 1; i < width; i++) {
             let finders = this.finders.shuffle();
 
