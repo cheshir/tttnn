@@ -59,7 +59,11 @@ let game = new Vue({
                 + this.calculateSiblings(expected, index - width - 1, (i) => i >= 0 && i % width != width - 1, (i) => i - width - 1) // Look top.
                 + this.calculateSiblings(expected, index + width + 1, (i) => i < this.cells.length && i % width != 0, (i) => i + width + 1); // Look bottom.
 
-            return [horizontal, vertical, diagonal1].some((count) => count >= neededForWin)
+            let diagonal2 = 1 // Center.
+                + this.calculateSiblings(expected, index - width + 1, (i) => i >= 0 && i % width != 0, (i) => i - width + 1) // Look top.
+                + this.calculateSiblings(expected, index + width - 1, (i) => i < this.cells.length && i % width != width - 1, (i) => i + width - 1); // Look Bottom.
+
+            return [horizontal, vertical, diagonal1, diagonal2].some((count) => count >= neededForWin)
         },
         calculateSiblings(expected, start, conditionFn, incrementFn) {
             let count = 0;
