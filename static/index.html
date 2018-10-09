@@ -11,12 +11,13 @@
 <body>
 
 <div id="game">
+    <button class="restart" v-on:click="restart">Restart</button>
     <div class="result-message">{{resultMessage}}</div>
 
 	<div class="table">
         <div class="cells">
             <span class="cell"
-				  v-for="(cell, index) in cells"
+				  v-for="(cell, index) in table.cells"
 				  v-on:click="makeTurn(index)">{{ cell.value }}</span>
         </div>
 	</div>
