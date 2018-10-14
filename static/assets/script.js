@@ -1,5 +1,5 @@
-const width = 10;
-const height = 10;
+const width = 15;
+const height = 15;
 const neededForWin = 5;
 
 // TODO Rewrite to class.
