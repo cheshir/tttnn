@@ -25,13 +25,13 @@ var xml2csvCommand = cli.Command{
 		// Open files.
 		fromFile, err := os.OpenFile(from, os.O_RDONLY, 0666)
 		if err != nil {
-			return errors.Wrapf(err, "failed to open file %s", fromFile)
+			return errors.Wrapf(err, "failed to open file %s", from)
 		}
 		defer fromFile.Close()
 
 		toFile, err := os.Create(to)
 		if err != nil {
-			return errors.Wrapf(err, "failed to open file %s", toFile)
+			return errors.Wrapf(err, "failed to open file %s", to)
 		}
 		defer toFile.Close()
 

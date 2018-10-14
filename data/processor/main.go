@@ -13,6 +13,7 @@ func main() {
 	app.Description = "helpers for working with raw data"
 	app.Commands = []cli.Command{
 		xml2csvCommand,
+		filterFullGamesCommand,
 	}
 
 	err := app.Run(os.Args)

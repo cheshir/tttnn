@@ -19,7 +19,7 @@ function Table(width, height) {
 // FIXME Fast clicking.
 Table.prototype.move = function(index, figure) {
     if (!this.cells[index].active) {
-        return
+        throw new Error("Trying to move to busy cell")
     }
 
     this.cells[index].value = figure;
@@ -54,7 +54,7 @@ Table.prototype.calculateSiblings = function(expected, start, conditionFn, incre
     let count = 0;
 
     for (let i = start; conditionFn(i); i = incrementFn(i)) {
-        if (this.cells[i].value != expected) {
+        if (this.cells[i].value !== expected) {
             break;
         }
         count++;
@@ -66,9 +66,18 @@ Table.prototype.calculateSiblings = function(expected, start, conditionFn, incre
 Table.prototype.restart = function() {
     // TODO Refresh with O(1)
     for (let i in this.cells) {
-        this.cells[i].value = "";
-        this.cells[i].active = true;
+        this.resetCell(i);
     }
+};
+
+Table.prototype.resetCell = function(index) {
+    if (index < 0 || index >= this.cells.length) {
+        throw new Error("Out of index")
+    }
+
+    this.cells[index].value = "";
+    this.cells[index].active = true;
+    this.free--;
 };
 
 Table.prototype.isFreeCell = function(index) {
@@ -149,6 +158,11 @@ const game = new Vue({
         playerFigure: "x",
         finished: false,
         resultMessage: "",
+        replay: {
+            rawMoves: "",
+            moves: [],
+            currentMove: 0
+        }
     },
     methods: {
         restart: function() {
@@ -161,7 +175,12 @@ const game = new Vue({
                 return
             }
 
-            this.table.move(index, this.playerFigure);
+            try {
+                this.table.move(index, this.playerFigure);
+            } catch (e) {
+                console.error(e);
+                alert(e);
+            }
 
             if (this.table.isWinning(index)) {
                 this.win();
@@ -183,9 +202,71 @@ const game = new Vue({
                 return
             }
 
-            debugger;
             if (this.table.isWinning(position)) {
                 this.lose();
+                return
+            }
+
+            if (!this.table.free) {
+                this.draw();
+                return
+            }
+        },
+        playGame: function() {
+            this.restart();
+            this.replay.moves = this.parseMoves(this.replay.rawMoves);
+            this.replay.currentMove = 0;
+            this.table.move(this.replay.moves[0], "x")
+        },
+        // TODO DRY
+        toFirstMove: function() {
+            this.restart();
+            this.replay.currentMove = 0;
+            this.table.move(this.replay.moves[0], "x");
+        },
+        previousMove: function() {
+            this.finished = false;
+            this.table.resetCell(this.replay.moves[this.replay.currentMove]);
+            this.replay.currentMove--;
+        },
+        nextMove: function() {
+            if (this.finished) {
+                return
+            }
+
+            this.replay.currentMove++;
+            let figure = this.replay.currentMove % 2 === 0 ? "x" : "o";
+
+            try {
+                this.table.move(this.replay.moves[this.replay.currentMove], figure);
+            } catch (e) {
+                console.error(e);
+                alert(e);
+            }
+
+            if (this.table.isWinning(this.replay.moves[this.replay.currentMove])) {
+                this.finished = true;
+                this.resultMessage = (this.replay.currentMove % 2 === 0 ? "Black" : "White") + " is winning";
+                return
+            }
+
+            if (!this.table.free) {
+                this.draw();
+                return
+            }
+        },
+        toLastMove: function() {
+            this.restart();
+
+            for (let i = 0; i < this.replay.moves.length; i++) {
+                let figure = i % 2 === 0 ? "x" : "o";
+                this.table.move(this.replay.moves[i], figure);
+            }
+
+            this.replay.currentMove = this.replay.moves.length - 1;
+            if (this.table.isWinning(this.replay.moves[this.replay.currentMove])) {
+                this.finished = true;
+                this.resultMessage = (this.replay.currentMove % 2 === 0 ? "Black" : "White") + " is winning";
                 return
             }
 
@@ -205,6 +286,14 @@ const game = new Vue({
         draw: function() {
             this.finished = true;
             this.resultMessage = "Draw"
+        },
+        parseMoves: function(game) {
+            return game.toLowerCase().split(" ").map((value) => {
+                let row = value.substring(0, 1);
+                let column = value.substring(1);
+
+                return (row.charCodeAt(0) - "a".charCodeAt(0)) * this.table.width + +column - 1
+            })
         }
     }
 });

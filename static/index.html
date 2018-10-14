@@ -12,6 +12,13 @@
 
 <div id="game">
     <button class="restart" v-on:click="restart">Restart</button>
+
+    <input type="text" v-model="replay.rawMoves" v-on:keyup.enter="playGame" placeholder="h8 j9 ..." />
+    <button class="next-move" v-on:click="toFirstMove"> << </button>
+    <button class="last-move" v-on:click="previousMove"> < </button>
+	<button class="next-move" v-on:click="nextMove"> > </button>
+	<button class="last-move" v-on:click="toLastMove"> >> </button>
+
     <div class="result-message">{{resultMessage}}</div>
 
 	<div class="table">
