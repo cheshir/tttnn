@@ -1,3 +1,0 @@
-install go
-tar -xzf libtensorflow.tar.gz -C /usr/local
-

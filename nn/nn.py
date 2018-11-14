@@ -30,7 +30,7 @@ K.set_session(sess)
 # @link http://cs231n.stanford.edu/reports/2016/pdfs/109_Report.pdf
 model = Sequential()
 
-model.add(Convolution2D(1024, 5, strides=1, padding="same", input_shape=(15, 15, 1), activation="relu")) # name=conv2d_1_input
+model.add(Convolution2D(1024, 5, strides=1, padding="same", input_shape=(15, 15, 1), activation="relu", name="input")) # name=conv2d_1_input
 model.add(MaxPooling2D(pool_size=3, strides=3))
 model.add(Dropout(0.25))
 

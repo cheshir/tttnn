@@ -111,7 +111,7 @@ func (t *Table) cellToIndex(cell string) (int, error) {
 
 	row := cell[0] - 'a'
 	column, err := strconv.Atoi(cell[1:])
-	if err != nil || row > 15 || column < 0 || column > 15 {
+	if err != nil || row < 0 || row >= 15 || column < 0 || column >= 15 {
 		return 0, ErrInvalidCell
 	}
 
