@@ -34,6 +34,7 @@ func main() {
 	defer predictor.Close()
 
 	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir(config.StaticDir)))
 	mux.Handle("/api/predict", newPredictHandler(predictor))
 
 	server := &http.Server{

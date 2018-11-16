@@ -1,5 +1,6 @@
 body {
     background-color: #161819;
+    color: #c4c4c4;
 }
 
 .table {
@@ -46,5 +47,4 @@ body {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    color: #c4c4c4;
 }

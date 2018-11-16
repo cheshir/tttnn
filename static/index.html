@@ -27,7 +27,9 @@
 				  v-for="(cell, index) in table.cells"
 				  v-on:click="makeTurn(index)">{{ cell.value }}</span>
         </div>
-	</div>
+
+        <div class="prediction-probability" v-if="probability != ''">AI predicts the move with probability {{ probability }}</div>
+    </div>
 </div>
 
 <div class="copy">Powered by cheshir ©</div>

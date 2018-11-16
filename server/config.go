@@ -11,9 +11,10 @@ const (
 )
 
 type appConfig struct {
-	Host string
-	Port string
-	AI   ai.Config
+	Host      string
+	Port      string
+	StaticDir string `envconfig:"static_dir"`
+	AI        ai.Config
 }
 
 func loadConfig() (appConfig, error) {
