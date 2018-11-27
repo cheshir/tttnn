@@ -1,26 +1,24 @@
 import numpy as np
 import tensorflow as tf
-from converter_to_learning_data import read_games_file, build_learning_data
 
 from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Activation, Dropout
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 
-TEST_DATA_PERCENT = 0.01
-
 # Init
 np.random.seed(42)
 
-raw_games = read_games_file("../data/prepared/full_games_renjunet.csv")
-learning_data_x, learning_data_y = build_learning_data(raw_games)
+dataset = np.load('../data/prepared/all_games_renjunet.npz')
 
 # Split to train and test data.
-testSplitIndex = int(len(learning_data_x) * TEST_DATA_PERCENT)
-learn_x = np.array(learning_data_x[testSplitIndex:])
-learn_y = np.array(learning_data_y[testSplitIndex:])
-test_x = np.array(learning_data_x[:testSplitIndex])
-test_y = np.array(learning_data_y[:testSplitIndex])
+TEST_DATA_PERCENT = 0.01
+
+testSplitIndex = int(len(dataset["x"]) * TEST_DATA_PERCENT)
+learn_x = np.array(dataset[testSplitIndex:])
+learn_y = np.array(dataset[testSplitIndex:])
+test_x = np.array(dataset[:testSplitIndex])
+test_y = np.array(dataset[:testSplitIndex])
 
 # We should create session to save model later.
 sess = tf.Session()
